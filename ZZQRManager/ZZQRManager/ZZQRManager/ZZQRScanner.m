@@ -105,6 +105,10 @@ for (AVMetadataObject *object in metadataObjects) {
     [self.session stopRunning];
 }
 
+- (void)resumeScan {
+    [self.session startRunning];
+}
+
 - (void)dealloc {
     // NSLog(@"内存没有问题");
     // NSLog(@"%s", __func__);

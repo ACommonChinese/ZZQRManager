@@ -20,5 +20,6 @@ typedef void (^ZZQRScannerResultType)(ZZQRScanner *scanner, AVMetadataMachineRea
 - (void)startScanInView:(UIView *)view resultHandler:(ZZQRScannerResultType)resultHandler;
 - (void)startScanInView:(UIView *)view machineReadableCodeObjects:(NSArray *)codeObjects resultHandler:(ZZQRScannerResultType)resultHandler;
 - (void)stopScan;
+- (void)resumeScan;
 
 @end

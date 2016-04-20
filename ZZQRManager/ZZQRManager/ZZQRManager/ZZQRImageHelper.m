@@ -114,7 +114,6 @@ static ZZQRImageHelper *_imageHelper = nil;
         UIImage *editedImage = [info objectForKey:UIImagePickerControllerEditedImage];
         CIImage *ciImage = [[CIImage alloc] initWithCGImage:editedImage.CGImage options:nil];
         NSString *str = [ZZQRImageHelper decodeImage:ciImage]; // editedImage.CIImage 只有在UIImage是由CIImage提供时（比如它是由imageWithCIImage:生成的）， UIImage 的 CIImage才不会是空值 http://ask.csdn.net/questions/1876
-        // NSLog(@"%@ %@", ciImage, str);
         if (self.completionHandler) {
             self.completionHandler(ciImage, str);
         }
@@ -156,7 +155,6 @@ static ZZQRImageHelper *_imageHelper = nil;
 */
 
 - (void)dealloc {
-    // NSLog(@"%s", __func__);
 }
 
 @end

@@ -77,7 +77,6 @@
     if (self.stepTotalValue >=  self.criticalValue) {
         // self.link.paused = YES;
         [self.link invalidate];
-        
         [self performSelector:@selector(callback) withObject:nil afterDelay:.75];
     }
 }
@@ -109,7 +108,6 @@
     scaleAnimation.repeatCount  = MAXFLOAT;
     [self.animationView.layer addAnimation:scaleAnimation forKey:@"ScaleAnimationKey"];
 }
-
 
 - (void)indicateEnd {
     [self.animationView removeFromSuperview];

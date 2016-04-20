@@ -44,6 +44,10 @@
             case 0: { // 相册
                 [ZZQRImageHelper getQRStrByPickImageWithController:self completionHandler:^(CIImage *image, NSString *decodeStr) {
                     NSLog(@"%@", decodeStr);
+                    if (decodeStr == nil) {
+                        NSLog(@"不是合法的二维码图片");
+                        return ;
+                    }
                     if (self.resultHandler) {
                         self.resultHandler(self, decodeStr);
                     }
@@ -89,10 +93,18 @@
 
 - (void)stopScan {
     [self.indicatorView indicateEnd];
-    self.scanner = nil;
+    [self.scanner stopScan];
+    // self.scanner = nil;
 }
 
 - (void)startScan {
+    [self.indicatorView indicateStart];
+    
+    if (self.scanner != nil) {
+        [self.scanner resumeScan];
+        return;
+    }
+    
     // 判断是否允许使用相机 iOS7 and later 设置--隐私--相机
     AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
     if (authStatus == AVAuthorizationStatusRestricted || authStatus == AVAuthorizationStatusDenied) {
@@ -103,8 +115,6 @@
             return ;
         }
     }
-    
-    [self.indicatorView indicateStart];
     
     self.scanner = [[ZZQRScanner alloc] init];
     __weak __typeof(self) weakself = self;
@@ -167,18 +177,4 @@
 }
 
 @end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
