@@ -11,4 +11,5 @@
 @interface ZZQROptionView : UIView
 
 @property (nonatomic, copy) void (^callbackHandler)(UIButton *button, NSInteger index);
+
 @end

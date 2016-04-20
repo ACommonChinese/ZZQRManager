@@ -69,7 +69,7 @@
                 <outletCollection property="buttons" destination="fsX-4G-fY8" id="Sqg-aP-Nz0"/>
                 <outletCollection property="buttons" destination="m49-Bx-qUn" id="o02-Zv-jgV"/>
             </connections>
-            <point key="canvasLocation" x="613" y="17"/>
+            <point key="canvasLocation" x="364" y="-146"/>
         </view>
     </objects>
     <resources>
