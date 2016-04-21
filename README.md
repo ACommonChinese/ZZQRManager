@@ -34,6 +34,7 @@ ZZQRScanViewController *controller = [[ZZQRScanViewController alloc] init];
 ---------
 
 二维码生成：  
+
 ```
 - (void)generateQRCode:(id)sender {
     self.resultImageView.image = [ZZQRImageHelper generateImageWithStr:self.inputField.text size:self.resultImageView.frame.size.width];
