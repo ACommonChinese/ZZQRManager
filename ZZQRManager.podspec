@@ -3,7 +3,7 @@ Pod::Spec.new do |s|
   s.name          = "ZZQRManager"
   s.version       = "1.0.0"
   s.license       = "MIT"
-  s.summary       = "系统二维码扫描示生成"
+  s.summary       = "系统二维码扫描 & 生成 & 解码二维码图片"
   s.homepage      = "https://github.com/ACommonChinese"
   s.author        = { "ACommonChinese" => "liuxing8807@126.com" }
   s.source        = { :git => "https://github.com/ACommonChinese/ZZQRManager.git", :tag => "1.0.0" }

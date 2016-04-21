@@ -11,7 +11,7 @@
 把文件夹ZZQRManager托入工程即可，或通过Pod安装：  
 
 ```
-
+pod 'ZZQRManager', ~> '1.0.0'
 ```
 
 使用系统AVFoundation框架进行扫描和解码图片以及二维码的生成。  
