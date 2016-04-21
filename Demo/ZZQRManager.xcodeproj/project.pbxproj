@@ -26,7 +26,6 @@
 		DA01221B1C6353B8009F1351 /* ZZQROptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA01220C1C6353B8009F1351 /* ZZQROptionView.m */; };
 		DA01221D1C6353B8009F1351 /* ZZQRScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = DA01220F1C6353B8009F1351 /* ZZQRScanner.m */; };
 		DA01221E1C6353B8009F1351 /* ZZQRScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0122111C6353B8009F1351 /* ZZQRScanViewController.m */; };
-		DA0122221C6354D4009F1351 /* ZZQROptionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA0122211C6354D4009F1351 /* ZZQROptionView.xib */; };
 		DA8FDB201C68D7A400AE37DE /* ZZQRIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8FDB1F1C68D7A400AE37DE /* ZZQRIndicatorView.m */; };
 		DA8FDB231C68D7E400AE37DE /* ZZQRPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8FDB221C68D7E400AE37DE /* ZZQRPoint.m */; };
 		DADE35F61C639DA7004AFC51 /* author.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DADE35F51C639DA7004AFC51 /* author.jpg */; };
@@ -63,7 +62,6 @@
 		DA01220F1C6353B8009F1351 /* ZZQRScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZZQRScanner.m; sourceTree = "<group>"; };
 		DA0122101C6353B8009F1351 /* ZZQRScanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZZQRScanViewController.h; sourceTree = "<group>"; };
 		DA0122111C6353B8009F1351 /* ZZQRScanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZZQRScanViewController.m; sourceTree = "<group>"; };
-		DA0122211C6354D4009F1351 /* ZZQROptionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZZQROptionView.xib; sourceTree = "<group>"; };
 		DA8FDB1E1C68D7A400AE37DE /* ZZQRIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZZQRIndicatorView.h; sourceTree = "<group>"; };
 		DA8FDB1F1C68D7A400AE37DE /* ZZQRIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZZQRIndicatorView.m; sourceTree = "<group>"; };
 		DA8FDB211C68D7E400AE37DE /* ZZQRPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZZQRPoint.h; sourceTree = "<group>"; };
@@ -136,7 +134,6 @@
 				DA0122011C6353B8009F1351 /* Resources */,
 				DA01220B1C6353B8009F1351 /* ZZQROptionView.h */,
 				DA01220C1C6353B8009F1351 /* ZZQROptionView.m */,
-				DA0122211C6354D4009F1351 /* ZZQROptionView.xib */,
 				DA01220E1C6353B8009F1351 /* ZZQRScanner.h */,
 				DA01220F1C6353B8009F1351 /* ZZQRScanner.m */,
 				DA0122101C6353B8009F1351 /* ZZQRScanViewController.h */,
@@ -235,7 +232,6 @@
 				DADE35F61C639DA7004AFC51 /* author.jpg in Resources */,
 				DA0121F41C63532F009F1351 /* LaunchScreen.storyboard in Resources */,
 				DA0122181C6353B8009F1351 /* qrcode_scan_btn_photo_nor@2x.png in Resources */,
-				DA0122221C6354D4009F1351 /* ZZQROptionView.xib in Resources */,
 				DA0121F11C63532F009F1351 /* Assets.xcassets in Resources */,
 				DA0122121C6353B8009F1351 /* qrcode_scan_bar@2x.png in Resources */,
 				DAFF94B41C6C26BC0099B00B /* qrcode_scan_titlebar_back_nor@2x.png in Resources */,
@@ -378,9 +374,9 @@
 				INFOPLIST_FILE = ZZQRManager/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.com.lianbi.lbnpushdemo;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.com.ZZQRManager;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -392,9 +388,9 @@
 				INFOPLIST_FILE = ZZQRManager/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.com.lianbi.lbnpushdemo;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.com.ZZQRManager;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

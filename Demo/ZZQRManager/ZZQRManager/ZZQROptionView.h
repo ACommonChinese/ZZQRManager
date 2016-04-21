@@ -10,6 +10,8 @@
 
 @interface ZZQROptionView : UIView
 
-@property (nonatomic, copy) void (^callbackHandler)(UIButton *button, NSInteger index);
+@property (nonatomic, copy) void (^callbackHandler)(NSInteger index);
+
++ (instancetype)optionViewWithFrame:(CGRect)frame;
 
 @end

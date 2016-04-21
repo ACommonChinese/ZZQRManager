@@ -29,17 +29,16 @@
 
 - (void)initUI {
     // 指示视图
-    self.indicatorView               = [[ZZQRIndicatorView alloc] initWithFrame:self.view.bounds];
+    self.indicatorView = [[ZZQRIndicatorView alloc] initWithFrame:self.view.bounds];
     self.indicatorView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_indicatorView];
     
     // 选项视图：二维码扫描/读取相册/开灯
-    ZZQROptionView *optionView = [[[NSBundle mainBundle] loadNibNamed:@"ZZQROptionView" owner:nil options:nil] lastObject];
-    optionView.frame = CGRectMake(0, self.view.bounds.size.height-100, [[UIScreen mainScreen] bounds].size.width, 100);
+    ZZQROptionView *optionView = [ZZQROptionView optionViewWithFrame:CGRectMake(0, self.view.bounds.size.height-100, [[UIScreen mainScreen] bounds].size.width, 100)];
     [self.view addSubview:optionView];
     
     __weak __typeof(self) weakself = self;
-    optionView.callbackHandler = ^(UIButton *button, NSInteger index) {
+    optionView.callbackHandler = ^(NSInteger index) {
         switch (index) {
             case 0: { // 相册
                 [ZZQRImageHelper getQRStrByPickImageWithController:self completionHandler:^(CIImage *image, NSString *decodeStr) {
