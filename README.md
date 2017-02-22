@@ -1,5 +1,6 @@
 # ZZQRManager
-**二维码扫描示意图：**
+**二维码/一级码扫描示意：**
+two-dimensional or one-dimensional barcode scan info:
 
 
 ![](./images/0.png)
@@ -18,18 +19,24 @@ pod 'ZZQRManager', ~> '1.0.0'
 二维码扫描(含有解码二维码图片功能)：  
 
 ```
-ZZQRScanViewController *controller = [[ZZQRScanViewController alloc] init];
-[controller setResultHandler:^(ZZQRScanViewController *controller, NSString *result) {
-	self.resultLabel.text = result;
-	[controller dismissViewControllerAnimated:YES completion:nil];
-}];
-[self presentViewController:controller animated:YES completion:nil];
+#import "ZZQRManager.h"
+...
+// 扫描
+- (IBAction)scan:(id)sender {
+    ZZQRScanViewController *controller = [[ZZQRScanViewController alloc] init];
+    // 设置扫描结果回调block
+    [controller setResultHandler:^(ZZQRScanViewController *controller, NSString *result) {
+        [controller dismissViewControllerAnimated:YES completion:^{
+            self.resultLabel.text = result;
+        }];
+    }];
+    [self presentViewController:controller animated:YES completion:nil];
+}
 ```
 效果图：  
 ![](./images/1.jpg)
 ![](./images/2.jpg)
 ![](./images/3.jpg)
-
 
 ---------
 
@@ -37,6 +44,6 @@ ZZQRScanViewController *controller = [[ZZQRScanViewController alloc] init];
 
 ```
 - (void)generateQRCode:(id)sender {
-    self.resultImageView.image = [ZZQRImageHelper generateImageWithStr:self.inputField.text size:self.resultImageView.frame.size.width];
+    self.resultImageView.image = [ZZQRImageHelper generateBarcode2ImageWithStr:self.inputField.text size:self.resultImageView.frame.size.width];
 }
 ```

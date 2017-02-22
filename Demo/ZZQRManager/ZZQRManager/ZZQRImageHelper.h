@@ -11,6 +11,8 @@
 
 @interface ZZQRImageHelper : NSObject
 
++ (UIImage *)generateBarcode1ImageWithStr:(NSString *)str size:(CGSize)size;
+
 /**
  *  根据字符串生成相应的二维码图片
  *
@@ -19,7 +21,8 @@
  *
  *  @return 生成的二维码图片
  */
-+ (UIImage *)generateImageWithStr:(NSString *)str size:(CGFloat)size;
++ (UIImage *)generateBarcode2ImageWithStr:(NSString *)str size:(CGFloat)size;
+
 
 /**
  *  从相册中选择图片并解码

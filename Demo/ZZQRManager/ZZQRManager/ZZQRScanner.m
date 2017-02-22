@@ -7,6 +7,7 @@
 //  https://www.shinobicontrols.com/blog/ios7-day-by-day-day-16-decoding-qr-codes-with-avfoundation
 
 #import "ZZQRScanner.h"
+#import "ZZQRScanTypes.h"
 #import <AVFoundation/AVFoundation.h>
 
 @interface ZZQRScanner () <AVCaptureMetadataOutputObjectsDelegate>
@@ -19,7 +20,7 @@
 @implementation ZZQRScanner
 
 - (void)startScanInView:(UIView *)view resultHandler:(ZZQRScannerResultType)resultHandler {
-    [self startScanInView:view machineReadableCodeObjects:@[AVMetadataObjectTypeQRCode, AVMetadataObjectTypeFace] resultHandler:resultHandler];
+    [self startScanInView:view machineReadableCodeObjects:[ZZQRScanTypes scanTypes] resultHandler:resultHandler];
 }
 
 - (void)startScanInView:(UIView *)view machineReadableCodeObjects:(NSArray *)codeObjects resultHandler:(ZZQRScannerResultType)resultHandler {
@@ -56,46 +57,7 @@
             return;
         }
     }
-    /**
-    [self.session stopRunning];
-    AVMetadataObject *metadata = [metadataObjects objectAtIndex:0];
-    AVMetadataMachineReadableCodeObject *machineCodeObject = (AVMetadataMachineReadableCodeObject *)[self.preview transformedMetadataObjectForMetadataObject:metadata];
-    if (self.resultHandler) {
-        self.resultHandler(self, machineCodeObject);
-    }*/
 }
-
-/**
- - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection 
- {
-    [self stopScan];
-    AVMetadataObject *metadata = [metadataObjects objectAtIndex:0];
-    [self.preview transformedMetadataObjectForMetadataObject:metadata];
-    CGRect interestRect = [machineCodeObject bounds];
-    NSLog(@"%@", NSStringFromCGRect(interestRect));
-    NSString *codeStr  = nil;
-    if ([metadata respondsToSelector:@selector(stringValue)]) {
-        codeStr = [(AVMetadataMachineReadableCodeObject *)metadata stringValue];
-    }
-    if (self.resultHandler) {
-        self.resultHandler(self, interestRect, codeStr);
-    }
- }
- */
-
-/**
-for (AVMetadataObject *object in metadataObjects) {
-    if ([object.type isEqual:AVMetadataObjectTypeFace]) {
-        AVMetadataFaceObject *face = (AVMetadataFaceObject *)object;
-        CMTime timestamp = [face time];
-        CGRect faceRectangle = face.bounds;
-        //        NSInteger faceID = face.faceID;
-        CGFloat rollAngle = face.rollAngle;
-        CGFloat yawAngle = face.yawAngle;
-        AVMetadataFaceObject *adjusted = (AVMetadataFaceObject *)[self.preview transformedMetadataObjectForMetadataObject:face];
-    }
-}
- */
 
 - (BOOL)isScanning {
     return self.session.isRunning;

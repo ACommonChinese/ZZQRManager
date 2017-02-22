@@ -9,6 +9,7 @@
 #import "FirstViewController.h"
 #import <AVFoundation/AVFoundation.h>
 #import "SecondViewController.h"
+#import "ZZQRScanTypes.h"
 
 @interface FirstViewController () <AVCaptureMetadataOutputObjectsDelegate>
 
@@ -37,7 +38,8 @@
     self.showLabel                 = [[UILabel alloc] initWithFrame:CGRectMake(20, 80, self.view.bounds.size.width - 40, 80)];
     self.showLabel.backgroundColor = [UIColor darkGrayColor];
     self.showLabel.textColor       = [UIColor whiteColor];
-    self.showLabel.text            = @"此处显示二维码扫描结果";
+    self.showLabel.text            = @"此处显示二维码/条形码扫描结果\n 把二维码/条形码居中扫描屏幕";
+    self.showLabel.numberOfLines   = 0;
     self.showLabel.textAlignment   = NSTextAlignmentCenter;
     [self.view addSubview:self.showLabel];
     
@@ -103,7 +105,7 @@
 
 // 开始扫描
 - (void)startScan {
-    [self startReadingMachineReadableCodeObjects:@[AVMetadataObjectTypeQRCode] inView:self.view];
+    [self startReadingMachineReadableCodeObjects:[ZZQRScanTypes scanTypes] inView:self.view];
 }
 
 // 停止扫描，关闭session

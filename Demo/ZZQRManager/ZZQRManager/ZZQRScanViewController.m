@@ -11,24 +11,32 @@
 #import "ZZQROptionView.h"
 #import "ZZQRIndicatorView.h"
 #import "ZZQRImageHelper.h"
+#import "ZZQRPlaySound.h"
+#import "ZZQRPlaceholderView.h"
 
 @interface ZZQRScanViewController ()
 
-@property (nonatomic) ZZQRIndicatorView *indicatorView; // 指示视图，缩放并定位到二维码具体区域
+@property (nonatomic) ZZQRIndicatorView *indicatorView; // show view，scale bigger/smaller to locate the area
 @property (nonatomic) ZZQRScanner *scanner;
 @property (nonatomic) NSString *result;
+@property (nonatomic) ZZQRPlaceholderView *placeholderView;
 @end
 
 @implementation ZZQRScanViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
     
-    [self initUI];
+    self.placeholderView = [[ZZQRPlaceholderView alloc] init];
+    [self.placeholderView showWithMode:ZZQRPlaceholderViewModeIndicator];
+    
+    [self performSelector:@selector(initUI) withObject:nil afterDelay:0.25];
 }
 
 - (void)initUI {
-    // 指示视图
+    [self.placeholderView dismiss], self.placeholderView = nil;
+    
     self.indicatorView = [[ZZQRIndicatorView alloc] initWithFrame:self.view.bounds];
     self.indicatorView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_indicatorView];
@@ -40,24 +48,34 @@
     __weak __typeof(self) weakself = self;
     optionView.callbackHandler = ^(NSInteger index) {
         switch (index) {
-            case 0: { // 相册
+            case 0: { // from album
+                [self stopScan];
                 [ZZQRImageHelper getQRStrByPickImageWithController:self completionHandler:^(CIImage *image, NSString *decodeStr) {
-                    NSLog(@"%@", decodeStr);
-                    if (decodeStr == nil) {
-                        NSLog(@"不是合法的二维码图片");
+                    // 取消选图
+                    if (image == nil && decodeStr == nil) {
+                        [self startScan];
                         return ;
                     }
+                    if (decodeStr == nil) { // 不是合法的二维码图片
+                        self.placeholderView = [[ZZQRPlaceholderView alloc] init];
+                        [self.placeholderView showWithMode:ZZQRPlaceholderViewModeRefresh];
+                        QRRefreshView *refreshView = (QRRefreshView *)self.placeholderView.contentView;
+                        [refreshView.refreshButton addTarget:self action:@selector(refresh) forControlEvents:UIControlEventTouchUpInside];
+                        [refreshView.backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+                        return;
+                    }
+                    
                     if (self.resultHandler) {
                         self.resultHandler(self, decodeStr);
                     }
                 }];
                 break;
             }
-            case 1: { // 开灯
+            case 1: { // turn the light on
                 [weakself lightOn];
                 break;
             }
-            case 2: { // 取消
+            case 2: {
                 [weakself cancel];
                 break;
             }
@@ -65,6 +83,18 @@
                 break;
         }
     };
+    
+    [self startScan];
+}
+
+- (void)refresh {
+    [self.placeholderView dismiss];
+    [self startScan];
+}
+
+- (void)back {
+    [self.placeholderView dismiss];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 /**
@@ -80,11 +110,6 @@
     }
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [self startScan];
-}
-
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self stopScan];
@@ -93,7 +118,6 @@
 - (void)stopScan {
     [self.indicatorView indicateEnd];
     [self.scanner stopScan];
-    // self.scanner = nil;
 }
 
 - (void)startScan {
@@ -118,7 +142,9 @@
     self.scanner = [[ZZQRScanner alloc] init];
     __weak __typeof(self) weakself = self;
     [self.scanner startScanInView:weakself.view resultHandler:^(ZZQRScanner *scanner, AVMetadataMachineReadableCodeObject *codeObject) {
-        // weakself.indicatorView.duration = 2.0; // 默认0.25
+        [ZZQRPlaySound playDefaultSound];
+        
+        // weakself.indicatorView.duration = 2.0; // default 0.25
         weakself.indicatorView.codeObject  = codeObject;
         [weakself.indicatorView indicateLockInWithCompletion:^(NSString *str) {
             if (weakself.resultHandler) {
@@ -151,7 +177,7 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark - 解码二维码图片
+#pragma mark - decode QRCode image 解码二维码图片
 // https://www.shinobicontrols.com/blog/ios8-day-by-day-day-13-coreimage-detectors
 - (CIImage *)prepareRectangleDetector:(CIImage *)ciImage {
     NSDictionary *options = @{CIDetectorAccuracy : CIDetectorAccuracyHigh};
@@ -171,7 +197,7 @@
 #pragma mark -
 
 - (void)dealloc {
-    // NSLog(@"内存没有问题");
+    // NSLog(@"memory is ok");
     // NSLog(@"%s", __func__);
 }
 

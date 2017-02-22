@@ -7,16 +7,13 @@
 //
 
 #import "SecondViewController.h"
-#import "ZZQRScanViewController.h"
-#import "ZZQROptionView.h"
-#import "ZZQRImageHelper.h"
+#import "ZZQRManager.h"
 
 @interface SecondViewController ()
 
 @property (weak, nonatomic) IBOutlet UITextField *inputField;
 @property (weak, nonatomic) IBOutlet UILabel *resultLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *resultImageView;
-
 
 @end
 
@@ -43,15 +40,17 @@
 // 扫描
 - (IBAction)scan:(id)sender {
     ZZQRScanViewController *controller = [[ZZQRScanViewController alloc] init];
+    // 设置扫描结果回调block
     [controller setResultHandler:^(ZZQRScanViewController *controller, NSString *result) {
-        self.resultLabel.text = result;
-        [controller dismissViewControllerAnimated:YES completion:nil];
+        [controller dismissViewControllerAnimated:YES completion:^{
+            self.resultLabel.text = result;
+        }];
     }];
     [self presentViewController:controller animated:YES completion:nil];
 }
 
 - (void)generateQRCode:(id)sender {
-    self.resultImageView.image = [ZZQRImageHelper generateImageWithStr:self.inputField.text size:self.resultImageView.frame.size.width];
+    self.resultImageView.image = [ZZQRImageHelper generateBarcode2ImageWithStr:self.inputField.text size:self.resultImageView.frame.size.width];
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
