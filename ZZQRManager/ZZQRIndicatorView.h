@@ -29,4 +29,5 @@
  *  锁定目标，在二维码的周边画线
  */
 - (void)indicateLockInWithCompletion:(void (^)(NSString *str))completion;
+
 @end

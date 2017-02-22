@@ -7,6 +7,8 @@
 //
 
 #import "ZZQRImageHelper.h"
+#import "ZZQRPlaySound.h"
+#import "ZZQRScanTypes.h"
 
 @interface ZZQRImageHelper () <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
@@ -17,13 +19,58 @@
 
 static ZZQRImageHelper *_imageHelper = nil;
 
++ (UIImage *)generateBarcode1ImageWithStr:(NSString *)str size:(CGSize)size {
+    /**
+    CIFilter *filter = [CIFilter filterWithName:[ZZQRScanTypes barcode1FilterType]];
+    [filter setDefaults];
+    if (str.length > 0) {
+        NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding];
+        [filter setValue:data forKey:@"inputMessage"];
+        CIImage *ciImage = [filter outputImage];
+        if (size.width == 0 || size.height == 0) {
+            return [UIImage imageWithCIImage:ciImage];
+        } else {
+            return [self createNonInterpolatedUIImageFormCIImage:ciImage withSize:size];
+        }
+    }
+    return nil;
+     */
+    if (str.length > 0) {
+        CIImage *barcodeImage;
+        NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:false];
+        CIFilter *filter = [CIFilter filterWithName:[ZZQRScanTypes barcode1FilterType]];
+        [filter setValue:data forKey:@"inputMessage"];
+        barcodeImage = [filter outputImage];
+        
+        // 消除模糊
+        CGFloat scaleX = size.width / barcodeImage.extent.size.width; // extent 返回图片的frame
+        CGFloat scaleY = size.height / barcodeImage.extent.size.height;
+        CIImage *transformedImage = [barcodeImage imageByApplyingTransform:CGAffineTransformScale(CGAffineTransformIdentity, scaleX, scaleY)];
+        return [UIImage imageWithCIImage:transformedImage];
+    }
+    return nil;
+}
+
 // 根据字符串生成二维码 http://www.jb51.net/article/71373.htm
 // 1. 导入CoreImage框架
 // 2. 创建过滤器并设置属性
 // 3. 设置内容
 // 4. 获取输出文件
-+ (UIImage *)generateImageWithStr:(NSString *)str size:(CGFloat)size {
-    CIFilter *filter = [CIFilter filterWithName:@"CIQRCodeGenerator"];
++ (UIImage *)generateBarcode2ImageWithStr:(NSString *)str size:(CGFloat)size {
+    CIImage *image;
+    NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:false];
+    CIFilter *filter = [CIFilter filterWithName:[ZZQRScanTypes barcode2FilterType]];
+    [filter setValue:data forKey:@"inputMessage"];
+    [filter setValue:@"H" forKey:@"inputCorrectionLevel"];
+    image = [filter outputImage];
+    // 消除模糊
+    CGFloat scaleX = size / image.extent.size.width; // extent 返回图片的frame
+    CGFloat scaleY = size / image.extent.size.height;
+    CIImage *transformedImage = [image imageByApplyingTransform:CGAffineTransformScale(CGAffineTransformIdentity, scaleX, scaleY)];
+    return [UIImage imageWithCIImage:transformedImage];
+    
+    /**
+    CIFilter *filter = [CIFilter filterWithName:[ZZQRScanTypes barcode2FilterType]];
     [filter setDefaults];
     
     if (str.length > 0) {
@@ -33,11 +80,44 @@ static ZZQRImageHelper *_imageHelper = nil;
         if (size == 0) {
             return [UIImage imageWithCIImage:ciImage];
         } else {
-            return [self createNonInterpolatedUIImageFormCIImage:ciImage withSize:size];
+            return [self createNonInterpolatedUIImageFormCIImage:ciImage withSize:CGSizeMake(size, size)];
         }
     }
     return nil;
+     */
 }
+
+/**
+ // 生成一维码图片
++ (UIImage *)generateBarcode1ImageWithStr:(NSString *)str size:(CGSize)size {
+    CIImage *barcodeImage;
+    NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:false];
+    CIFilter *filter = [CIFilter filterWithName:[ZZQRScanTypes barcode1FilterType]];
+    [filter setValue:data forKey:@"inputMessage"];
+    barcodeImage = [filter outputImage];
+ 
+    // 消除模糊
+    CGFloat scaleX = size.width / barcodeImage.extent.size.width; // extent 返回图片的frame
+    CGFloat scaleY = size.height / barcodeImage.extent.size.height;
+    CIImage *transformedImage = [barcodeImage imageByApplyingTransform:CGAffineTransformScale(CGAffineTransformIdentity, scaleX, scaleY)];
+    return [UIImage imageWithCIImage:transformedImage];
+}
+
+// 生成二维码图片
++ (UIImage *)generateBarcodeImageWithStr:(NSString *)str size:(CGFloat)size {
+    CIImage *image;
+    NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:false];
+    CIFilter *filter = [CIFilter filterWithName:@"CIQRCodeGenerator"];
+    [filter setValue:data forKey:@"inputMessage"];
+    [filter setValue:@"H" forKey:@"inputCorrectionLevel"];
+    image = [filter outputImage];
+    // 消除模糊
+    CGFloat scaleX = size / image.extent.size.width; // extent 返回图片的frame
+    CGFloat scaleY = size / image.extent.size.height;
+    CIImage *transformedImage = [image imageByApplyingTransform:CGAffineTransformScale(CGAffineTransformIdentity, scaleX, scaleY)];
+    return [UIImage imageWithCIImage:transformedImage];
+}
+ */
 
 /**
  * 根据CIImage生成指定大小的UIImage(否则生成的二维码图片可能不是很清晰，这里自己重绘图片)
@@ -45,10 +125,10 @@ static ZZQRImageHelper *_imageHelper = nil;
  * @param image CIImage
  * @param size 图片宽度
  */
-+ (UIImage *)createNonInterpolatedUIImageFormCIImage:(CIImage *)image withSize:(CGFloat) size
++ (UIImage *)createNonInterpolatedUIImageFormCIImage:(CIImage *)image withSize:(CGSize) size
 {
     CGRect extent          = CGRectIntegral(image.extent);
-    CGFloat scale          = MIN(size/CGRectGetWidth(extent), size/CGRectGetHeight(extent));
+    CGFloat scale          = MIN(size.width/CGRectGetWidth(extent), size.height/CGRectGetHeight(extent));
     // 1. 创建bitmap
     size_t width           = CGRectGetWidth(extent) * scale;
     size_t height          = CGRectGetHeight(extent) * scale;
@@ -110,14 +190,26 @@ static ZZQRImageHelper *_imageHelper = nil;
 
 #pragma mark - <UIImagePickerControllerDelegate>
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    [picker dismissViewControllerAnimated:NO completion:^{
-        UIImage *editedImage = [info objectForKey:UIImagePickerControllerEditedImage];
-        CIImage *ciImage = [[CIImage alloc] initWithCGImage:editedImage.CGImage options:nil];
-        NSString *str = [ZZQRImageHelper decodeImage:ciImage]; // editedImage.CIImage 只有在UIImage是由CIImage提供时（比如它是由imageWithCIImage:生成的）， UIImage 的 CIImage才不会是空值 http://ask.csdn.net/questions/1876
+    UIImage *editedImage = [info objectForKey:UIImagePickerControllerEditedImage];
+    CIImage *ciImage = [[CIImage alloc] initWithCGImage:editedImage.CGImage options:nil];
+    NSString *str = [ZZQRImageHelper decodeImage:ciImage]; // editedImage.CIImage 只有在UIImage是由CIImage提供时（比如它是由imageWithCIImage:生成的）， UIImage 的 CIImage才不会是空值 http://ask.csdn.net/questions/1876
+    if (str != nil) {
+        [ZZQRPlaySound playDefaultSound];
+    }
+    
+    [picker dismissViewControllerAnimated:YES completion:^{
         if (self.completionHandler) {
             self.completionHandler(ciImage, str);
         }
         _imageHelper = nil;
+    }];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [picker dismissViewControllerAnimated:YES completion:^{
+        if (self.completionHandler) {
+            self.completionHandler(nil, nil);
+        }
     }];
 }
 

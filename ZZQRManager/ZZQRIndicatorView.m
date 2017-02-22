@@ -88,7 +88,7 @@
 }
 
 /**
- *  开始动画－－搜索
+ *  search animation begin
  */
 - (void)indicateStart {
     CGFloat length            = self.bounds.size.width / 2;
@@ -110,20 +110,33 @@
 }
 
 - (void)indicateEnd {
-    [self.animationView removeFromSuperview];
     // [self.animationView.layer removeAnimationForKey:@"ScaleAnimationKey"];
+    [self.animationView removeFromSuperview];
 }
 
 /**
  *  锁定目标，在二维码的周边画线
  *  扫描二维码后得到的四个角的点有可能不是一个矩形，而是一个有四条边的不规则图形
  *  AVMetadataMachineReadableCodeObject对象的corners属性是个数组，它包含了这4个点的具体坐标，我们根据这4个点的坐标把这个不规则图形画出来，这4个点的顺序如下：
- ⚫️1-------------4⚫️
+ http://stackoverflow.com/questions/21712632/using-barcode-corners-to-create-cgrect
+ ⚫️0-------------3⚫️
   \                |
    \               |
     \              |
      \             |
-     ⚫️2----------3⚫️
+     ⚫️1----------2⚫️
+ 
+ fromPoints                           toPoints
+  ______________                       ______________
+ | 0 ZZQQRPoint |     ----------->    | 0 ZZQQRPoint |
+ |--------------|                     |--------------|
+ | 1 ZZQQRPoint |     ----------->    | 1 ZZQQRPoint |
+ |--------------|                     |--------------|
+ | 2 ZZQQRPoint |     ----------->    | 2 ZZQQRPoint |
+ |--------------|                     |--------------|
+ | 3 ZZQQRPoint |     ----------->    | 3 ZZQQRPoint |
+ '--------------'                     '--------------'
+ 
  */
 - (void)indicateLockInWithCompletion:(void (^)(NSString *str))completion {
     self.lockInCompletion = completion;
@@ -131,7 +144,15 @@
     self.fromPoints = [ZZQRPoint pointsWithRect:self.animationView.frame];
     [self.animationView removeFromSuperview];
     self.toPoints = [ZZQRPoint pointsWithCorners:self.codeObject.corners];
-    
+    // NSLog(@"barcode type：%@", self.codeObject.type);
+    // po self.codeObject
+    // one-dimensional barcode example 1：
+    // <AVMetadataMachineReadableCodeObject: 0x1456bca0, type="org.iso.Code128", bounds={ 41.3,284.2 231.9x1.5 }>corners { 41.3,284.2 41.3,285.8 273.1,285.8 273.1,284.2 }, time 13928009860958, stringValue "1234567890123"
+    // one-dimensional barcode example 2：
+    // <AVMetadataMachineReadableCodeObject: 0x1658eb10, type="org.iso.Code128", bounds={ 82.0,265.7 172.6x31.9 }>corners { 82.0,296.1 82.3,297.5 254.6,267.1 254.3,265.7 }, time 14118918735416, stringValue "1234567890123"
+
+    // two-dimensional barcode example 1：：
+    // <AVMetadataMachineReadableCodeObject: 0x15ebc4f0, type="org.iso.QRCode", bounds={ 131.8,239.8 118.4x111.0 }>corners { 144.0,239.8 131.8,339.0 233.0,350.8 250.3,252.4 }, time 13743881148500, stringValue "hanguanghui"
     // 取临界值
     self.criticalValue = fabs(self.toPoints[0].x - self.fromPoints[0].x);
     NSInteger count = self.fromPoints.count;
@@ -144,32 +165,12 @@
         ZZQRPoint *toPoint   = self.toPoints[i];
         // 1秒60次刷新 FPS: 60
         CGPoint cgPoint      = CGPointMake((toPoint.x - fromPoint.x)/(self.duration*FPS), (toPoint.y - fromPoint.y)/(self.duration*FPS));
-        ZZQRPoint *stepPoint = [[ZZQRPoint alloc] initWithCGPoint:cgPoint];// 步进量
+        ZZQRPoint *stepPoint = [[ZZQRPoint alloc] initWithCGPoint:cgPoint]; // 步进量
         self.stepPoints[i]   = stepPoint;
     }
     self.link = [CADisplayLink displayLinkWithTarget:self selector:@selector(setNeedsDisplay)];
     [self.link addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
 }
-
-#pragma mark - animation delegate
-/**
-- (void)animationDidStop:(CAAnimation*)anim finished:(BOOL)flag {
-    if ([anim isKindOfClass:[CABasicAnimation class]]) {
-        CABasicAnimation *animation = (CABasicAnimation *)anim;
-        if ([animation.keyPath isEqualToString:@"bounds"] && self.resultHandler) {
-            // self.resultHandler(self, self.result);
-        }
-    }
-    
-    // [self.layer removeAnimationForKey:@"ScaleAnimationKey"];  // 这会导致 _view1回到原来的位置
-    // CAAnimation *animation = [self.layer animationForKey:@"my_key"];
-    // NSLog(@"stop animation: %@", NSStringFromCGPoint(_placeholderView.layer.position));
-}
- 
- - (void)animationDidStart:(CAAnimation*)anim {
- // NSLog(@"start animation...");
- }
-*/
 
 - (void)dealloc {
     // NSLog(@"%s", __func__);

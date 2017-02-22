@@ -24,11 +24,11 @@
 }
 
 + (NSArray<ZZQRPoint *> *)pointsWithRect:(CGRect)rect {
-    ZZQRPoint *point_1  = [[ZZQRPoint alloc] initWithCGPoint:rect.origin];
-    ZZQRPoint *point_2  = [[ZZQRPoint alloc] initWithCGPoint:CGPointMake(rect.origin.x, CGRectGetMaxY(rect))];
-    ZZQRPoint *point_3  = [[ZZQRPoint alloc] initWithCGPoint:CGPointMake(CGRectGetMaxX(rect), CGRectGetMaxY(rect))];
-    ZZQRPoint *point_4  = [[ZZQRPoint alloc] initWithCGPoint:CGPointMake(CGRectGetMaxX(rect), rect.origin.y)];
-    return @[point_1, point_2, point_3, point_4];
+    ZZQRPoint *point_0  = [[ZZQRPoint alloc] initWithCGPoint:rect.origin];
+    ZZQRPoint *point_1  = [[ZZQRPoint alloc] initWithCGPoint:CGPointMake(rect.origin.x, CGRectGetMaxY(rect))];
+    ZZQRPoint *point_2  = [[ZZQRPoint alloc] initWithCGPoint:CGPointMake(CGRectGetMaxX(rect), CGRectGetMaxY(rect))];
+    ZZQRPoint *point_3  = [[ZZQRPoint alloc] initWithCGPoint:CGPointMake(CGRectGetMaxX(rect), rect.origin.y)];
+    return @[point_0, point_1, point_2, point_3];
 }
 
 + (NSArray<ZZQRPoint *> *)pointsWithCorners:(NSArray *)points {
