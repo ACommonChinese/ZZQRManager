@@ -217,7 +217,7 @@
 				TargetAttributes = {
 					DA0121E01C63532F009F1351 = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = 5AK8R5AMDE;
+						DevelopmentTeam = E97K6G9K4T;
 					};
 				};
 			};
@@ -399,6 +399,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = E97K6G9K4T;
 				INFOPLIST_FILE = ZZQRManager/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -413,6 +414,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = E97K6G9K4T;
 				INFOPLIST_FILE = ZZQRManager/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

@@ -32,10 +32,19 @@
         return;
     }
     self.session = [[AVCaptureSession alloc] init];
-    [self.session addInput:input];
+    if ([self.session canAddInput:input]) {
+        [self.session addInput:input];
+    } else {
+        NSLog(@"Error when addInPut");
+    }
     AVCaptureMetadataOutput *output = [[AVCaptureMetadataOutput alloc] init];
-    [self.session addOutput:output];
+    if ([self.session canAddOutput:output]) {
+        [self.session addOutput:output];
+    } else {
+        NSLog(@"Error when add output");
+    }
     [output setMetadataObjectTypes:codeObjects];
+    
     [output setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
     self.preview = [AVCaptureVideoPreviewLayer layerWithSession:self.session];
     self.preview.videoGravity = AVLayerVideoGravityResizeAspectFill; // The videoGravity property is used to specify how the video should appear within the bounds of the layer. Since the aspect-ratio of the video is not equal to that of the screen, we want to chop off the edges of the video so that it appears to fill the entire screen, hence the use of AVLayerVideoGravityResizeAspectFill.
