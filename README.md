@@ -1,5 +1,5 @@
 # ZZQRManager
-**二维码/一级码扫描示意：**
+**二维码/一维码扫描示意：**
 two-dimensional or one-dimensional barcode scan info:
 
 
