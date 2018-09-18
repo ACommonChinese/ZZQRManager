@@ -125,8 +125,7 @@ static ZZQRImageHelper *_imageHelper = nil;
  * @param image CIImage
  * @param size 图片宽度
  */
-+ (UIImage *)createNonInterpolatedUIImageFormCIImage:(CIImage *)image withSize:(CGSize) size
-{
++ (UIImage *)createNonInterpolatedUIImageFormCIImage:(CIImage *)image withSize:(CGSize) size {
     CGRect extent          = CGRectIntegral(image.extent);
     CGFloat scale          = MIN(size.width/CGRectGetWidth(extent), size.height/CGRectGetHeight(extent));
     // 1. 创建bitmap
@@ -200,7 +199,7 @@ static ZZQRImageHelper *_imageHelper = nil;
     [picker dismissViewControllerAnimated:YES completion:^{
         if (self.completionHandler) {
             self.completionHandler(ciImage, str);
-        }
+        } // 1liI0Oo
         _imageHelper = nil;
     }];
 }
@@ -247,6 +246,18 @@ static ZZQRImageHelper *_imageHelper = nil;
 */
 
 - (void)dealloc {
+}
+
++ (UIImage *)imageNamed:(NSString *)imageName {
+    return [UIImage imageNamed:imageName inBundle:[self resourceBundle] compatibleWithTraitCollection:nil];
+}
+
++ (NSBundle *)resourceBundle {
+    static NSBundle *bundle = nil;
+    if (bundle == nil) {
+        bundle = [NSBundle bundleWithPath:[[NSBundle bundleForClass:self.class] pathForResource:@"ZZQRManager" ofType:@"bundle"]];
+    }
+    return bundle;
 }
 
 @end

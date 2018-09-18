@@ -18,7 +18,6 @@
  *
  *  @param str  字符串
  *  @param size 要生成的二维码图片的尺寸
- *
  *  @return 生成的二维码图片
  */
 + (UIImage *)generateBarcode2ImageWithStr:(NSString *)str size:(CGFloat)size;
@@ -36,10 +35,17 @@
  *  解码图片
  *
  *  @param image 要解码的图片
- *
  *  @return 解码图片得到的字符串
  */
 + (NSString *)decodeImage:(CIImage *)image;
+
+/**
+ * 获取ZXQManager.bundle中的图片
+ *
+ * @param imageName 图片名
+ * @return UIImage对象
+ */
++ (UIImage *)imageNamed:(NSString *)imageName;
 
 @end
 

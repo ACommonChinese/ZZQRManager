@@ -7,6 +7,7 @@
 //
 
 #import "ZZQROptionView.h"
+#import "ZZQRImageHelper.h"
 
 @interface ZZQROptionView ()
 
@@ -26,8 +27,8 @@
     // 相册
     UIButton *photoButton = [UIButton buttonWithType:UIButtonTypeCustom];
     photoButton.frame = CGRectMake(xPadding, yPadding, width, height);
-    [photoButton setImage:[UIImage imageNamed:@"qrcode_scan_btn_photo_nor.png"] forState:UIControlStateNormal];
-    [photoButton setImage:[UIImage imageNamed:@"qrcode_scan_btn_photo_down.png"] forState:UIControlStateHighlighted];
+    [photoButton setImage:[ZZQRImageHelper imageNamed:@"qrcode_scan_btn_photo_nor.png"] forState:UIControlStateNormal];
+    [photoButton setImage:[ZZQRImageHelper imageNamed:@"qrcode_scan_btn_photo_down.png"] forState:UIControlStateHighlighted];
     [photoButton addTarget:optionView action:@selector(photoButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [optionView addSubview:photoButton];
     
@@ -35,8 +36,8 @@
     UIButton *lightButton = [UIButton buttonWithType:UIButtonTypeCustom];
     lightButton.frame     = CGRectMake(0, 0, width, height);
     lightButton.center    = CGPointMake(frame.size.width/2.0, frame.size.height/2.0);
-    [lightButton setImage:[UIImage imageNamed:@"qrcode_scan_btn_flash_nor.png"] forState:UIControlStateNormal];
-    [lightButton setImage:[UIImage imageNamed:@"qrcode_scan_btn_flash_down.png"] forState:UIControlStateSelected];
+    [lightButton setImage:[ZZQRImageHelper imageNamed:@"qrcode_scan_btn_flash_nor.png"] forState:UIControlStateNormal];
+    [lightButton setImage:[ZZQRImageHelper imageNamed:@"qrcode_scan_btn_flash_down.png"] forState:UIControlStateSelected];
     [lightButton addTarget:optionView action:@selector(lightButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [optionView addSubview:lightButton];
     

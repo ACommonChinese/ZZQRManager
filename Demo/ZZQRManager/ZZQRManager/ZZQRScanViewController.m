@@ -177,7 +177,7 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark - decode QRCode image 解码二维码图片
+#pragma mark - decode QRCode image
 // https://www.shinobicontrols.com/blog/ios8-day-by-day-day-13-coreimage-detectors
 - (CIImage *)prepareRectangleDetector:(CIImage *)ciImage {
     NSDictionary *options = @{CIDetectorAccuracy : CIDetectorAccuracyHigh};
@@ -199,6 +199,10 @@
 - (void)dealloc {
     // NSLog(@"memory is ok");
     // NSLog(@"%s", __func__);
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return YES;
 }
 
 @end
