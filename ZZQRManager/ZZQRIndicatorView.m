@@ -91,8 +91,9 @@
  *  search animation begin
  */
 - (void)indicateStart {
-    CGFloat length            = self.bounds.size.width / 2;
-    self.animationView        = [[ZZQRIndicatorView alloc] initWithFrame:CGRectMake(0, 0, length, length)];
+    NSLog(@"thread: %@", [NSThread currentThread]);
+    CGFloat length = self.bounds.size.width / 2;
+    self.animationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, length, length)]; // ZZQRIndicatorView
     self.animationView.backgroundColor = [UIColor clearColor];
     self.animationView.center = CGPointMake(self.bounds.size.width/2.0, self.bounds.size.height/2.0);
     self.animationView.layer.borderColor = [[UIColor whiteColor] CGColor];
@@ -150,7 +151,6 @@
     // <AVMetadataMachineReadableCodeObject: 0x1456bca0, type="org.iso.Code128", bounds={ 41.3,284.2 231.9x1.5 }>corners { 41.3,284.2 41.3,285.8 273.1,285.8 273.1,284.2 }, time 13928009860958, stringValue "1234567890123"
     // one-dimensional barcode example 2：
     // <AVMetadataMachineReadableCodeObject: 0x1658eb10, type="org.iso.Code128", bounds={ 82.0,265.7 172.6x31.9 }>corners { 82.0,296.1 82.3,297.5 254.6,267.1 254.3,265.7 }, time 14118918735416, stringValue "1234567890123"
-
     // two-dimensional barcode example 1：：
     // <AVMetadataMachineReadableCodeObject: 0x15ebc4f0, type="org.iso.QRCode", bounds={ 131.8,239.8 118.4x111.0 }>corners { 144.0,239.8 131.8,339.0 233.0,350.8 250.3,252.4 }, time 13743881148500, stringValue "hanguanghui"
     // 取临界值

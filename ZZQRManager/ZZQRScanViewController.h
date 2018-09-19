@@ -13,6 +13,7 @@
 @interface ZZQRScanViewController : UIViewController
 
 @property (nonatomic, copy) void (^resultHandler)(ZZQRScanViewController *controller, NSString *result);
+
 - (void)setResultHandler:(void (^)(ZZQRScanViewController *controller, NSString *result))resultHandler;
 
 @end

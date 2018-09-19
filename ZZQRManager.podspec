@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name         = 'ZZQRManager'
-    s.version      = '1.2'
+    s.version      = '1.3'
     s.summary      = 'An easy way to use qr manage'
     s.homepage     = 'https://github.com/ACommonChinese/ZZQRManager/'
     s.license      = 'MIT'
