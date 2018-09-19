@@ -353,7 +353,7 @@
 				INFOPLIST_FILE = ZZQRManager/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.banma.smartTravel;
+				PRODUCT_BUNDLE_IDENTIFIER = com.weizhenliu.ZZQRManager;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "6d70a816-0664-44b2-b924-3b781c4c3954";
 				PROVISIONING_PROFILE_SPECIFIER = "match Development com.banma.smartTravel";
@@ -371,7 +371,7 @@
 				INFOPLIST_FILE = ZZQRManager/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.banma.smartTravel;
+				PRODUCT_BUNDLE_IDENTIFIER = com.weizhenliu.ZZQRManager;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";

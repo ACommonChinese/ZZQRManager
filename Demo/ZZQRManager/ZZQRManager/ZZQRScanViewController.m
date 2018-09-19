@@ -16,7 +16,7 @@
 
 @interface ZZQRScanViewController ()
 
-@property (nonatomic) ZZQRIndicatorView *indicatorView; // show view，scale bigger/smaller to locate the area
+@property (nonatomic) ZZQRIndicatorView *indicatorView;
 @property (nonatomic) ZZQRScanner *scanner;
 @property (nonatomic) NSString *result;
 @property (nonatomic) ZZQRPlaceholderView *placeholderView;
@@ -26,17 +26,46 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor blackColor];
     
-    self.placeholderView = [[ZZQRPlaceholderView alloc] init];
-    [self.placeholderView showWithMode:ZZQRPlaceholderViewModeIndicator];
-    
-    [self performSelector:@selector(initUI) withObject:nil afterDelay:0.25];
+    [self initUI];
+    [self startScan];
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)pickImageAndGetQRCode {
+    [ZZQRImageHelper getQRStrByPickImageWithController:self completionHandler:^(CIImage *image, NSString *decodeStr) {
+        // Cancel choose image
+        if (image == nil && decodeStr == nil) {
+            [self startScan];
+            return ;
+        }
+        if (decodeStr == nil) { // invalid qr string
+            self.placeholderView = [[ZZQRPlaceholderView alloc] init];
+            [self.placeholderView showWithMode:ZZQRPlaceholderViewModeRefresh];
+            QRRefreshView *refreshView = (QRRefreshView *)self.placeholderView.contentView;
+            [refreshView.refreshButton addTarget:self action:@selector(refresh) forControlEvents:UIControlEventTouchUpInside];
+            [refreshView.backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+            return;
+        }
+        
+        if (self.resultHandler) {
+            self.resultHandler(self, decodeStr);
+        }
+    }];
+}
+
+- (void)showPlaceholderViewWithModel:(ZZQRPlaceholderViewMode)mode {
+    if (!_placeholderView) {
+        _placeholderView = [[ZZQRPlaceholderView alloc] init];
+    }
+    [_placeholderView showWithMode:mode];
 }
 
 - (void)initUI {
-    [self.placeholderView dismiss], self.placeholderView = nil;
-    
     self.indicatorView = [[ZZQRIndicatorView alloc] initWithFrame:self.view.bounds];
     self.indicatorView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_indicatorView];
@@ -49,26 +78,8 @@
     optionView.callbackHandler = ^(NSInteger index) {
         switch (index) {
             case 0: { // from album
-                [self stopScan];
-                [ZZQRImageHelper getQRStrByPickImageWithController:self completionHandler:^(CIImage *image, NSString *decodeStr) {
-                    // 取消选图
-                    if (image == nil && decodeStr == nil) {
-                        [self startScan];
-                        return ;
-                    }
-                    if (decodeStr == nil) { // 不是合法的二维码图片
-                        self.placeholderView = [[ZZQRPlaceholderView alloc] init];
-                        [self.placeholderView showWithMode:ZZQRPlaceholderViewModeRefresh];
-                        QRRefreshView *refreshView = (QRRefreshView *)self.placeholderView.contentView;
-                        [refreshView.refreshButton addTarget:self action:@selector(refresh) forControlEvents:UIControlEventTouchUpInside];
-                        [refreshView.backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
-                        return;
-                    }
-                    
-                    if (self.resultHandler) {
-                        self.resultHandler(self, decodeStr);
-                    }
-                }];
+                [weakself stopScan];
+                [weakself pickImageAndGetQRCode];
                 break;
             }
             case 1: { // turn the light on
@@ -83,8 +94,6 @@
                 break;
         }
     };
-    
-    [self startScan];
 }
 
 - (void)refresh {
@@ -97,9 +106,6 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-/**
- *  开灯
- */
 - (void)lightOn {
     AVCaptureDevice *captureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     if (captureDevice.torchMode == AVCaptureTorchModeOff) {
@@ -121,7 +127,9 @@
 }
 
 - (void)startScan {
-    [self.indicatorView indicateStart];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.indicatorView indicateStart];
+    });
     
     if (self.scanner != nil) {
         [self.scanner resumeScan];
@@ -152,24 +160,6 @@
             }
         }];
     }];
-
-    /**
-    [self.scanner startScanInView:weakself.view resultHandler:^(ZZQRScanner *scanner, CGRect interestRect, NSString *result) {
-        
-        weakself.result                  = result;
-        CABasicAnimation *frameAnimation = [CABasicAnimation animationWithKeyPath:@"bounds"];
-        frameAnimation.duration          = 0.4f;
-        frameAnimation.timingFunction    = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-        frameAnimation.fromValue         = [NSValue valueWithCGRect:weakself.indicatorView.frame];
-        frameAnimation.toValue           = [NSValue valueWithCGRect:interestRect];
-        frameAnimation.delegate          = weakself;
-        weakself.indicatorView = [];
-        [weakself.indicatorView setFrame:interestRect];
-        [weakself.indicatorView.layer addAnimation:frameAnimation forKey:@"MoveAnimationKey"];
-        
-        NSLog(@"\n(%lf,%lf) (%lf,%lf) (%lf,%lf), (%lf,%lf)\n", interestRect.origin.x, interestRect.origin.y, interestRect.origin.x, CGRectGetMaxY(interestRect), CGRectGetMaxX(interestRect), CGRectGetMaxY(interestRect), CGRectGetMaxX(interestRect), interestRect.origin.y);
-    }];
-     */
 }
 
 - (void)cancel {
@@ -197,8 +187,8 @@
 #pragma mark -
 
 - (void)dealloc {
-    // NSLog(@"memory is ok");
-    // NSLog(@"%s", __func__);
+     // NSLog(@"memory is ok");
+     // NSLog(@"%s", __func__);
 }
 
 - (BOOL)prefersStatusBarHidden {

@@ -26,21 +26,20 @@
 }
 
 - (void)setUp {
-    // 生成二维码
+    // For generate qr-code image
     self.inputField.rightViewMode = UITextFieldViewModeAlways;
     UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
-    button.frame = CGRectMake(0, 0, 50, 40);
-    [button setTitle:@"生成" forState:UIControlStateNormal];
-    button.backgroundColor = [UIColor darkGrayColor];
+    button.frame = CGRectMake(0, 0, 100, self.inputField.bounds.size.height);
+    [button setTitle:@"generate" forState:UIControlStateNormal];
+    button.backgroundColor = [UIColor colorWithRed:0 green:128.0/256 blue:128/256.0 alpha:1.0];
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(generateQRCode:) forControlEvents:UIControlEventTouchUpInside];
     self.inputField.rightView = button;
 }
 
-// 扫描
 - (IBAction)scan:(id)sender {
     ZZQRScanViewController *controller = [[ZZQRScanViewController alloc] init];
-    // 设置扫描结果回调block
+    //[controller setResultHandler:nil];
     [controller setResultHandler:^(ZZQRScanViewController *controller, NSString *result) {
         [controller dismissViewControllerAnimated:YES completion:^{
             self.resultLabel.text = result;

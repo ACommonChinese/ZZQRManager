@@ -92,26 +92,24 @@
     
     // 设置输出口类型和代理, 我们通过其代理方法拿到输出的数据
     [output setMetadataObjectTypes:codeObjects];
-    [output setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()]; // 使用主线程队列，相应比较同步，使用其他队列，相应不同步，容易让用户产生不好的体验
+    [output setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()]; // 使用主线程队列，相应比较同步，使用其他队列，相应不同步，但是session的startRunning或stopRunning会阻塞线程
     
     // 设置展示层（预览层），显示扫描界面/区域
     self.preview = [AVCaptureVideoPreviewLayer layerWithSession:self.session];
     self.preview.frame = view.bounds;
     [view.layer insertSublayer:self.preview atIndex:0];
     
-    // 开扫，走你
+    // Noted: Block thread!!!
     [self.session startRunning];
 }
 
-// 开始扫描
 - (void)startScan {
     [self startReadingMachineReadableCodeObjects:[ZZQRScanTypes scanTypes] inView:self.view];
 }
 
-// 停止扫描，关闭session
 - (void)stopScan {
     self.button.selected = NO;
-    [self.session stopRunning];
+    [self.session stopRunning]; // Not good idea here, because it block the main thread！！！
     [self.preview removeFromSuperlayer];
 }
 
