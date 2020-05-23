@@ -176,8 +176,8 @@
 				TargetAttributes = {
 					DA0121E01C63532F009F1351 = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = E97K6G9K4T;
-						ProvisioningStyle = Manual;
+						DevelopmentTeam = Y2KKR9F9FN;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -186,6 +186,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -347,16 +348,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: xiantong chen (BFZ9LYPFKC)";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = E97K6G9K4T;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Y2KKR9F9FN;
 				INFOPLIST_FILE = ZZQRManager/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.weizhenliu.ZZQRManager;
+				MARKETING_VERSION = 1.3.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dreamly.CCSeeWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "6d70a816-0664-44b2-b924-3b781c4c3954";
-				PROVISIONING_PROFILE_SPECIFIER = "match Development com.banma.smartTravel";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -371,6 +373,7 @@
 				INFOPLIST_FILE = ZZQRManager/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.weizhenliu.ZZQRManager;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

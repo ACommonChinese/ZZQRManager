@@ -28,8 +28,32 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
     
-    [self initUI];
-    [self startScan];
+    if ([self notSupportCamera]) {
+        return;
+    } else {
+        [self initUI];
+        [self startScan];
+    }
+}
+
+- (BOOL)notSupportCamera {
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+        button.frame = self.view.bounds;
+        button.center = self.view.center;
+        button.backgroundColor = [UIColor whiteColor];
+        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        UIFont *font = [UIFont systemFontOfSize:20.0];
+        [button.titleLabel setFont:font];
+        [button setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
+        [button setTitle:@"设备不支持扫描，点击返回" forState:UIControlStateNormal];
+        [button.titleLabel setAdjustsFontSizeToFitWidth:YES];
+        button.center = self.view.center;
+        [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:button];
+        return YES;
+    }
+    return NO;
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
@@ -102,7 +126,9 @@
 }
 
 - (void)back {
-    [self.placeholderView dismiss];
+    if (self.placeholderView) {
+        [self.placeholderView dismiss];
+    }
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -141,9 +167,11 @@
     if (authStatus == AVAuthorizationStatusRestricted || authStatus == AVAuthorizationStatusDenied) {
         if (authStatus == AVAuthorizationStatusRestricted || authStatus == AVAuthorizationStatusDenied) {
             NSString*str = [NSString stringWithFormat:@"请在系统设置－%@－相机中打开允许使用相机",  [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleNameKey]];
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:str delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-            [alert show];
-            return ;
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:str preferredStyle:UIAlertControllerStyleAlert];
+            [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            }]];
+            [self presentViewController:alertController animated:YES completion:nil];
+            return;
         }
     }
     
@@ -196,4 +224,5 @@
 }
 
 @end
+
 

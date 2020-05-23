@@ -22,6 +22,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.title = @"使用ZZQRManager";
     [self setUp];
 }
 
@@ -29,12 +30,14 @@
     // For generate qr-code image
     self.inputField.rightViewMode = UITextFieldViewModeAlways;
     UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
-    button.frame = CGRectMake(0, 0, 100, self.inputField.bounds.size.height);
+    button.frame = CGRectMake(0, 0, 100, 45);
     [button setTitle:@"generate" forState:UIControlStateNormal];
-    button.backgroundColor = [UIColor colorWithRed:0 green:128.0/256 blue:128/256.0 alpha:1.0];
+     button.backgroundColor = [UIColor colorWithRed:0 green:128.0/256 blue:128/256.0 alpha:1.0];
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(generateQRCode:) forControlEvents:UIControlEventTouchUpInside];
     self.inputField.rightView = button;
+    
+    [self setAutomaticallyAdjustsScrollViewInsets:NO];
 }
 
 - (IBAction)scan:(id)sender {
@@ -45,6 +48,7 @@
             self.resultLabel.text = result;
         }];
     }];
+    controller.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:controller animated:YES completion:nil];
 }
 

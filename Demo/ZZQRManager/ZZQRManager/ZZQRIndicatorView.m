@@ -91,7 +91,6 @@
  *  search animation begin
  */
 - (void)indicateStart {
-    NSLog(@"thread: %@", [NSThread currentThread]);
     CGFloat length = self.bounds.size.width / 2;
     self.animationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, length, length)]; // ZZQRIndicatorView
     self.animationView.backgroundColor = [UIColor clearColor];

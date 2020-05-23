@@ -252,6 +252,10 @@ static ZZQRImageHelper *_imageHelper = nil;
     return [UIImage imageNamed:imageName inBundle:[self resourceBundle] compatibleWithTraitCollection:nil];
 }
 
++ (NSString *)resourcePath:(NSString *)fileName {
+    return [[self resourceBundle] pathForResource:fileName ofType:nil];
+}
+
 + (NSBundle *)resourceBundle {
     static NSBundle *bundle = nil;
     if (bundle == nil) {
@@ -261,3 +265,4 @@ static ZZQRImageHelper *_imageHelper = nil;
 }
 
 @end
+

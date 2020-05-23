@@ -8,6 +8,7 @@
 
 #import "ZZQRPlaySound.h"
 #import <AudioToolbox/AudioToolbox.h>
+#import "ZZQRImageHelper.h"
 
 @implementation ZZQRPlaySound
 
@@ -21,7 +22,10 @@
 + (void)playDefaultSound:(int)count {
     SystemSoundID completeSound;
     NSInteger cbDataCount = count;
-    NSURL *audioPath = [[NSBundle mainBundle] URLForResource:@"ZZQRManager.bundle/di" withExtension:@"mp3"];
+    NSString *path = [ZZQRImageHelper resourcePath:@"di.mp3"];
+    NSAssert(path.length > 0, @"audio file not exist, check file");
+    NSURL *audioPath = [NSURL fileURLWithPath:path];
+    NSAssert(audioPath, @"audio file not exist!");
 #if __has_feature(objc_arc)
     AudioServicesCreateSystemSoundID((__bridge CFURLRef)audioPath, &completeSound);
 #else
@@ -41,3 +45,4 @@ static void soundCompletionCallback(SystemSoundID  ssid, void* data) {
 }
 
 @end
+

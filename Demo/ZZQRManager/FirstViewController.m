@@ -21,7 +21,7 @@
 
 /**
  *  此控制器显示了二维码扫描的基本流程
- *  点击Next按钮，进入SecondViewController，对二维码扫描等功能进行了封装
+ *  点击 ZZQRManager 按钮，进入SecondViewController，使用库ZZQRManager, 进行二维码扫描生成等操作
  */
 @implementation FirstViewController
 
@@ -35,7 +35,7 @@
     self.title = @"二维码Demo";
     
     // 显示二维码信息Label
-    self.showLabel                 = [[UILabel alloc] initWithFrame:CGRectMake(20, 80, self.view.bounds.size.width - 40, 80)];
+    self.showLabel                 = [[UILabel alloc] initWithFrame:CGRectMake(20, 100, self.view.bounds.size.width - 40, 80)];
     self.showLabel.backgroundColor = [UIColor darkGrayColor];
     self.showLabel.textColor       = [UIColor whiteColor];
     self.showLabel.text            = @"此处显示二维码/条形码扫描结果\n 把二维码/条形码居中扫描屏幕";
@@ -54,8 +54,7 @@
     [_button addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_button];
     
-    
-    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(gotoSecondController:)];
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithTitle:@"ZZQRManager" style:UIBarButtonItemStylePlain target:self action:@selector(gotoSecondController:)];
     self.navigationItem.rightBarButtonItem = rightItem;
 }
 

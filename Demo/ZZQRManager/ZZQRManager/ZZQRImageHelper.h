@@ -47,6 +47,13 @@
  */
 + (UIImage *)imageNamed:(NSString *)imageName;
 
-@end
+/**
+ * 获取ZXQManager.bundle中的资源路径
+ *
+ * @param fileName 文件名
+ * @return 完整的资源路径
+ */
++ (NSString *)resourcePath:(NSString *)fileName;
 
+@end
 
