@@ -43,6 +43,7 @@
 - (IBAction)scan:(id)sender {
     ZZQRScanViewController *controller = [[ZZQRScanViewController alloc] init];
     //[controller setResultHandler:nil];
+    [controller setModalPresentationStyle:UIModalPresentationFullScreen];
     [controller setResultHandler:^(ZZQRScanViewController *controller, NSString *result) {
         [controller dismissViewControllerAnimated:YES completion:^{
             self.resultLabel.text = result;

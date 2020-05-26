@@ -24,6 +24,7 @@ pod 'ZZQRManager'
 // 扫描
 - (IBAction)scan:(id)sender {
     ZZQRScanViewController *controller = [[ZZQRScanViewController alloc] init];
+    [controller setModalPresentationStyle:UIModalPresentationFullScreen];
     // 设置扫描结果回调block
     [controller setResultHandler:^(ZZQRScanViewController *controller, NSString *result) {
         [controller dismissViewControllerAnimated:YES completion:^{
@@ -38,7 +39,7 @@ pod 'ZZQRManager'
 ![](./images/2.jpg)
 ![](./images/3.jpg)
 
----------
+---------------------------
 
 二维码生成：  
 
@@ -46,4 +47,13 @@ pod 'ZZQRManager'
 - (void)generateQRCode:(id)sender {
     self.resultImageView.image = [ZZQRImageHelper generateBarcode2ImageWithStr:self.inputField.text size:self.resultImageView.frame.size.width];
 }
+```
+
+---------------------------
+
+注意： 由于使用了相机功能，因此需要在Info.plist中添加 `NSCameraUsageDescription` 申请权限
+
+```
+<key>NSCameraUsageDescription</key>
+<string>罪恶的大刘要使用您的相机</string>
 ```
